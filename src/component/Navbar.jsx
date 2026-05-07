@@ -1,12 +1,7 @@
 import { useState } from "react";
 import { ChevronDown, MapPin, ShoppingCart, Menu, X } from "lucide-react";
 import { Link, NavLink } from "react-router-dom";
-import {
-  SignedIn,
-  SignedOut,
-  SignInButton,
-  UserButton,
-} from "@clerk/clerk-react";
+import {  SignedIn, SignedOut, SignInButton, UserButton,} from "@clerk/clerk-react";
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
