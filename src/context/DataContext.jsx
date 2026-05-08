@@ -1,15 +1,14 @@
 import axios from "axios";
-import { createContext, useState } from "react";
-
+import { createContext, useContext, useState } from "react";
 
 export const DataContext = createContext(null);
-
 
 export const DataProvider = ({ children }) => {
     const [data, setData] = useState([]);
 
     const fetchAllData = async () => {
-        console.log("Rest Api & Function Started");
+        console.log("Function Started");
+
         try {
             const response = await axios.get("https://fakestoreapi.com/products?limit=200");
             setData(response.data);
@@ -25,3 +24,5 @@ export const DataProvider = ({ children }) => {
         </DataContext.Provider>
     );
 };
+
+export const getData = ()=> useContext(DataContext)
