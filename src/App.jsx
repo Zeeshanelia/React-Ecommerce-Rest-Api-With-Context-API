@@ -6,10 +6,11 @@ import Product from "./page/Product";
 import Navbar from "./component/Navbar";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import Carousel from "./component/Carousel"
+// import { getData } from "./context/DataContext";
 const apiKey = import.meta.env.VITE_GEOAPIFY_KEY;
 
 function App() {
+  //  const { fetchAllData } = getData();
   const [location, setLocation] = useState(null);
   const [dropDown, setDropDown] = useState(false)
 
@@ -51,6 +52,7 @@ function App() {
   };
 
   useEffect(() => {
+    // fetchAllData();
     getLocation();
   }, []);
 
@@ -59,6 +61,7 @@ function App() {
       <div className="min-h-screen w-full bg-gradient-to-br from-pink-200 via-gray-100 to-yellow-200 flex flex-col">
 
         <Navbar location={location} getLocation={getLocation} dropDown={dropDown} setDropDown={setDropDown}/>
+
 
         <Routes>
           <Route path="/" element={<Home />} />

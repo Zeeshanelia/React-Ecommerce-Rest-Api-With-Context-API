@@ -83,9 +83,10 @@ const Navbar = () => {
           {/* Mobile Menu Button */}
           <button
             className="md:hidden"
-            onClick={() => setOpen(!open)}
-          >
-            {open ? <X /> : <Menu />}
+            onClick={() => setOpen(!open)}>
+
+            { open ?  <X />  :  <Menu /> }
+
           </button>
         </div>
       </div>
@@ -96,26 +97,22 @@ const Navbar = () => {
           <ul className="flex flex-col items-center gap-4 py-4 font-semibold">
 
             <NavLink
-              to="/"
-              onClick={() => setOpen(false)}
+              to="/" onClick={() => setOpen(false)}
               className="hover:text-red-400" > Home
             </NavLink>
 
             <NavLink
-              to="/product"
-              onClick={() => setOpen(false)}
+              to="/product"  onClick={() => setOpen(false)}
               className="hover:text-red-400">  Product
             </NavLink>
 
             <NavLink
-              to="/about"
-              onClick={() => setOpen(false)}
+              to="/about"  onClick={() => setOpen(false)}
               className="hover:text-red-400"> About
             </NavLink>
 
             <NavLink
-              to="/contact"
-              onClick={() => setOpen(false)}
+              to="/contact" onClick={() => setOpen(false)}
               className="hover:text-red-400"> Contact
             </NavLink>
 
