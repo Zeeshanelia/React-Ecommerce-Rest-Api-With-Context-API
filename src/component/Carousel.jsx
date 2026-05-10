@@ -1,16 +1,11 @@
-import { useContext, useEffect } from "react";
-import { DataContext } from "../context/DataContext";
+import {  useEffect } from "react";
+import {  getData } from "../context/DataContext";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
 import { ArrowBigLeftDash, ArrowBigRightDash } from 'lucide-react';
-import { Link } from "react-router-dom";
-
-const Carousel = () => {
-    const { data, fetchAllData } = useContext(DataContext);
-
-
-    // Custom Arrow components for Slick
+import Category from '../component/Category'
+ // Custom Arrow components for Slick
     const NextArrow = ({ onClick }) => (
         <div
             className="absolute top-1/2 right-4 z-20 cursor-pointer text-white text-2xl
@@ -29,71 +24,73 @@ const Carousel = () => {
 
 
 
+const Carousel = () => {
+    const { data } = getData();
 
 
     var settings = {
         prevArrow: <PrevArrow />,
         nextArrow: <NextArrow />,
-        dots: true,
+        dots:false,
         autoplay: true,
         infinite: true,
-        autoplaySpeed: 6000,
-        pouseOnHover: false,
-        speed: 4000,
+        autoplaySpeed: 14000,
+        pauseOnHover: false,
+        speed: 2000,
         slidesToShow: 1,
         slidesToScroll: 1,
     };
 
-    useEffect(() => {
-        fetchAllData();
-    }, []);
+    // useEffect(() => {
+    //     fetchAllData();
+    // }, []);
 
 
     return (
-        <div className="overflow-hidden">
-            <Slider {...settings}>
-                {data?.slice(0, 7)?.map((items, index) => (
-                    <div
-                        key={index}
-                        className="bg-gradient-to-l from-blue-300 to-purple-800 shadow-xl">
+        <div className="overflow-hidden pb-3 bg-gradient-to-br from-pink-200 via-gray-100 to-yellow-200">
+            <Slider {...settings} >
+                {data?.slice(0, 5)?.map((items) => (
+                    <div key={items.id} className="bg-gradient-to-l from-blue-300 to-purple-800 shadow-xl ">
                         <div className="max-w-6xl mx-auto md:px-10 px-2">
-                            <div className="flex  md:flex-row md:items-center md:justify-between gap-10 h-[150px] md:h-[320px]">
+                            <div className="flex  md:flex-row md:items-center md:justify-between gap-10 h-[155px] md:h-[320px]">
 
 
-                                <div className="space-y-2 md:space-y-4 md:w-1/2 text-center md:text-left lg:ml-10">
+                                <div className="space-y-1 md:space-y-3 md:w-1/2 text-center md:text-left ml-10">
                                     <h3 className="mt-2 text-rose-500 font-bold underline text-sm">
                                         {items.category}
                                     </h3>
 
                                     <h1 className="text-white md:text-3xl md:font-bold uppercase">
-                                        {items.title}
+                                        {items.title.slice(0, 50)}
                                     </h1>
 
                                     <p className="text-gray-200 md:block hidden">
                                         {items.description.slice(0, 100)}
                                     </p>
 
-                                    <Link to='/product'>
-                                        <button className="px-4 py-2 bg-gradient-to-t from-yellow-300 to-zinc-300  hover:shadow-xl">
-                                            Shop Now
-                                        </button>
-                                    </Link>
+                                    <button className="px-4 py-2 bg-gradient-to-t from-yellow-300 to-zinc-300 hover:shadow-lg">
+                                        Shop Now
+                                    </button>
                                 </div>
 
                                 {/* Image Section */}
                                 <div className="md:w-1/2 flex justify-center mt-2 ">
-                                    <img src={items.image} alt="image"
-                                        className="md:w-66 md:h-66 w-34 h-34 lg:object-fit md:rounded-full shadow-zinc-600 md:hover:shadow-xl" />
+                                    <img
+                                        src={items.images}
+                                        alt="image" className="md:w-64 md:h-64 w-32 h-32 lg:object-contain md:rounded" />
                                 </div>
-
-
                                 <div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 ))}
-            </Slider>
+
+            </Slider >
+
+            <div>
+                <Category/>
+            </div>
         </div>
 
     );

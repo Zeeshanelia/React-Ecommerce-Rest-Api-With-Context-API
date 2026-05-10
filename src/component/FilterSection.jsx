@@ -1,199 +1,80 @@
 import { getData } from "../context/DataContext";
 
-const FilterSection = () => {
-    const { categoryOnlyData } = getData();
+const FilterSection = ({ search, setSearch,  brand, setBrand, priceRange, setPriceRange,  category, setCategory, handleCategoryChange, handleBrandChange}) => {
 
-    return (
+  const { categoryOnlyData, brandOnlyData } = getData();
 
-        // Main Filter Container
-        <div
-            className="
-                mt-6 md:mt-10
+  return (
+    <div className="mt-1 h-full p-1 rounded-2xl md:min-w-[200px] bg-white/20 backdrop-blur-md border border-white/40 shadow-lg shadow-indigo-200/40 ">
 
-                /* Full width mobile */
-                w-full
+      {/* Brand Data */}
+      <h1 className="mb-1 text-center font-bold text-md tracking-tight bg-gradient-to-r from-cyan-500 to-indigo-500 bg-clip-text text-transparent">Brand</h1>
 
-                /* Fixed width desktop */
-                md:min-w-[240px]
-                lg:min-w-[260px]
+      <select className="w-full rounded border border-gray-400 mt-2" onChange={handleBrandChange} value={brand}>
+        {brandOnlyData?.map((item, index) => (
+          <option value={item} key={index}>{item}</option>
+        ))}
+      </select>
 
-                /* Responsive padding */
-                p-3 sm:p-4 md:p-5
+      {/* Price Data */}
+      <h1 className="py-2 text-center font-bold text-md tracking-wide bg-gradient-to-r from-cyan-500 to-indigo-500 bg-clip-text text-transparent">Price Range</h1>
+      <div>
+        <label> Price Range : ${priceRange[0]} - ${priceRange[1]} </label>
 
-                rounded-xl md:rounded-2xl
-
-                h-max
-
-                /* Glassmorphism */
-                bg-white/20
-                backdrop-blur-md
-
-                border border-white/40
-
-                shadow-lg
-                shadow-indigo-200/40">
-
-            {/* Top Shimmer Line */}
-            <div
-                className="
-                    h-px bg-gradient-to-r from-transparent via-white to-transparent
-                    mb-4"/>
+        <input type="range" className="w-full mx-auto"
+          value={priceRange[1]}
+          min={priceRange[0]} max={1000}
+          onChange={(e) => setPriceRange([priceRange[0], Number(e.target.value)])} />
+      </div>
 
 
 
-            {/* Search Input */}
+      {/* Reset Filter */}
+
+      <button
+        onClick={() => {
+          setSearch("");
+          setCategory("fragrances");
+          setBrand("gucci");
+          setPriceRange([0, 5000]);
+
+        }}
+        className="mt-auto w-full px-4 py-2 rounded-xl font-semibold text-sm bg-white/40 border border-white/50 text-slate-700 hover:bg-white/60 hover:shadow-md flex gap-2 items-center justify-center transition-all duration-200 hover:scale-105 backdrop-blur-sm">
+        Reset Filter
+      </button>
+
+      {/* Divider */}
+      <div className="h-px bg-gradient-to-r from-cyan-300/50 via-indigo-300/50 to-transparent mt-2 mb-3" />
+      <div className="h-px bg-gradient-to-r from-transparent via-white to-transparent mb-6" />
+
+      {/* Category */}
+      <h1 className="mb-1 text-center font-bold text-md tracking-wide bg-gradient-to-r from-cyan-500 to-indigo-500 bg-clip-text text-transparent">Category</h1>
+
+      {/* Search */}
+
+      <input
+        type="text"
+        placeholder="Search Products.."
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+        className="w-full p-1 rounded border border-gray-400 bg-white/30 backdrop-blur-sm placeholder-slate-400 text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-300/50 transition-all duration-200" />
+
+      <div className="flex flex-col mt-2 text-left">
+        {categoryOnlyData?.map((item, index) => (
+          <div key={index} className="flex gap-3 items-center p-2 rounded-xl hover:bg-white/30 transition-all duration-200 group cursor-pointer">
+
             <input
-                type="text"
-                placeholder="Search.."
-
-                className="
-                    w-full
-                    /* Responsive padding */
-                    p-2 sm:p-3
-
-                    rounded-xl
-                    bg-white/30
-                    backdrop-blur-sm
-
-                    border border-white/50
-
-                    placeholder-slate-400
-                    text-slate-700
-
-                    /* Responsive text */
-                    text-sm sm:text-base
-
-                    focus:outline-none
-                    focus:ring-2
-                    focus:ring-indigo-300/50
-
-                    transition-all
-                    duration-200"/>
-
-
-
-            {/* Category Heading */}
-            <h1
-                className="
-                    mt-5
-
-                    font-bold
-
-                    /* Responsive heading */
-                    text-lg sm:text-xl
-
-                    tracking-wide
-
-                    bg-gradient-to-r
-                    from-cyan-500
-                    to-indigo-500
-
-                    bg-clip-text
-                    text-transparent">
-                Category
-            </h1>
-
-
-
-            {/* Divider */}
-            <div
-                className="
-                    h-px
-
-                    bg-gradient-to-r
-                    from-cyan-300/50
-                    via-indigo-300/50
-                    to-transparent
-
-                    mt-2
-                    mb-3" />
-
-
-
-            {/* Category List */}
-            <div
-                className="
-                    flex
-                    flex-col
-
-                    /* Responsive spacing */
-                    gap-1 sm:gap-2
-
-                    /* Scroll if many categories */
-                    max-h-[300px]
-                    overflow-y-auto
-                    pr-1" >
-
-                {/* Loop Categories */}
-                {categoryOnlyData?.map((item, index) => (
-
-                    <div
-                        key={index}
-
-                        className="
-                            flex
-                            items-center
-                            gap-2 sm:gap-3
-
-                            /* Responsive padding */
-                            p-2
-
-                            rounded-xl
-
-                            hover:bg-white/30
-
-                            transition-all
-                            duration-200
-
-                            group
-                            cursor-pointer">
-
-                        {/* Checkbox */}
-                        <input
-                            type="checkbox"
-
-                            className="
-                                accent-indigo-500
-
-                                w-4 h-4
-                                sm:w-5 sm:h-5
-
-                                cursor-pointer
-
-                                flex-shrink-0"/>
-
-
-
-                        {/* Category Button */}
-                        <button
-                            className="
-                                cursor-pointer
-
-                                uppercase
-
-                                /* Responsive text */
-                                text-xs sm:text-sm
-
-                                font-semibold
-
-                                text-slate-600
-
-                                group-hover:text-indigo-600
-
-                                transition-colors
-                                duration-200
-
-                                tracking-wider
-
-                                /* Prevent overflow */
-                                truncate">
-                            {item}
-                        </button>
-                    </div>
-                ))}
-            </div>
-        </div>
-    );
+              type="checkbox"   name={item}  value={item}
+              onChange={handleCategoryChange}   checked={category === item}
+              className="accent-indigo-500 w-4 h-4 cursor-pointer"/>
+            <span className="uppercase text-sm font-semibold text-slate-600 group-hover:text-indigo-600 transition-colors duration-200 tracking-wider">
+              {item}
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
 };
 
 export default FilterSection;
