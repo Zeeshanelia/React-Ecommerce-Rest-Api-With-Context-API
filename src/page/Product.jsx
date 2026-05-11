@@ -3,7 +3,8 @@ import { getData } from "../context/DataContext";
 import FilterSection from '../component/FilterSection'
 import ProductCart from '../component/ProductCart'
 import Pagination from '../component/Pagination'
-
+import Lottie from "lottie-react";
+import Pagenotfound from '../assets/Pagenotfound.json';
 
 const Product = () => {
   const { data, fetchAllData } = getData();
@@ -14,6 +15,7 @@ const Product = () => {
   const [priceRange, setPriceRange] = useState([0, 500])
   const [page, setPage] = useState(1)
 
+
   useEffect(() => {
     fetchAllData()
     // console.log("fetching product...")
@@ -21,15 +23,18 @@ const Product = () => {
 
   const handleCategoryChange = (e) => {
     setCategory(e.target.value)
+    setPage(1)
   }
 
   const handleBrandChange = (e) => {
     setBrand(e.target.value)
+    setPage(1)
   }
 
   const handlePage = (selectedPage) => {
     setPage(selectedPage)
   }
+
 
   const filterData = data?.filter((item) =>
     (item.title).toLowerCase().includes(search.toLowerCase()) &&
@@ -38,10 +43,11 @@ const Product = () => {
     item.price >= priceRange[0] &&
     item.price <= priceRange[1]);
 
+  const dynamicPage = Math.ceil(filterData?.length / 16)
 
   return (
     <>
-      <div className="max-w-6xl mx-auto mb-4 mt-2">
+      <div className="max-w-6xl mx-auto mb-4 ">
         {
           data?.length > 0
             ?
@@ -51,29 +57,36 @@ const Product = () => {
                 handleCategoryChange={handleCategoryChange}
                 handleBrandChange={handleBrandChange} />
 
-                <Pagination page={page} handlePage={handlePage}  />
-
               {
-                <>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 items-center h-screen">
-                    {filterData?.slice(page * 16 - 16, page * 16).map((products) => (
-                      <ProductCart key={products.id} products={products} />
-                    ))}
+                filterData?.length > 0
+                  ?
+                  <div className="flex flex-col items-center justify-center md:mb-42">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 items-center mt-1">
+                      {filterData?.slice(page * 16 - 16, page * 16).map((products) => (
+                        <ProductCart key={products.id} products={products} />
+                      ))}
+                    </div>
+                    <Pagination page={page} handlePage={handlePage} dynamicPage={dynamicPage} />
                   </div>
-
-                </>
+                  :
+                  <> <div className="flex items-center justify-center md:h-96 md:mt-14">
+                    <Lottie animationData={Pagenotfound} className=" md:w-[48rem] bg-inherit" />
+                  </div> </>
               }
+
             </div>)
             :
             <>
 
-              (<div className="flex items-center justify-center h-[400px] rounded-lg">
+              <div className="flex items-center justify-center h-[500px] rounded-lg">
                 <video muted autoPlay loop >
                   <source src={Loading} type="video/mp4" />
                 </video>
-              </div>)
+              </div>
+
             </>
         }
+
 
 
       </div>

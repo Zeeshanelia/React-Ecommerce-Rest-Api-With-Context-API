@@ -1,14 +1,18 @@
 import { ShoppingBag } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const ProductCart = ({ products }) => {
+    const navigate = useNavigate()
+
     return (
-        <div className="relative flex flex-col p-3 rounded-2xl md:mx-1 cursor-pointer
+        <div className="relative flex flex-col p-3 rounded-2xl md:mx-1 cursor-pointer justify-start
             transition-all duration-300 hover:scale-105 bg-white/20 backdrop-blur-md border border-white/40 shadow-xl shadow-indigo-200/40 hover:shadow hover:shadow-indigo-300/50
-            hover:bg-white/30  ">
+            hover:bg-white/30"
+            >
 
                        {/* Image */}
             <div className="flex items-center justify-center  rounded-xl p-1
-                bg-white/30 border border-white/30 ">
+                bg-white/30 border border-white/30" onClick={()=>navigate(`/product/${products.id}`)}>
                 <img src={products.images?.[0] || products.thumbnail} alt={products.title}
                     onError={(e) => {
                         e.target.onerror = null

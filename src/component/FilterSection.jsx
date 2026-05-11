@@ -1,7 +1,12 @@
 import { getData } from "../context/DataContext";
 
-const FilterSection = ({ search, setSearch,  brand, setBrand, priceRange, setPriceRange,  category, setCategory, handleCategoryChange, handleBrandChange}) => {
-
+const FilterSection = ({
+  search, setSearch,
+  brand, setBrand,
+  priceRange, setPriceRange,
+  category, setCategory,
+  handleCategoryChange, handleBrandChange
+}) => {
   const { categoryOnlyData, brandOnlyData } = getData();
 
   return (
@@ -64,9 +69,9 @@ const FilterSection = ({ search, setSearch,  brand, setBrand, priceRange, setPri
           <div key={index} className="flex gap-3 items-center p-2 rounded-xl hover:bg-white/30 transition-all duration-200 group cursor-pointer">
 
             <input
-              type="checkbox"   name={item}  value={item}
-              onChange={handleCategoryChange}   checked={category === item}
-              className="accent-indigo-500 w-4 h-4 cursor-pointer"/>
+              type="checkbox" name={item} value={item}
+              onChange={handleCategoryChange} checked={category === item}
+              className="accent-indigo-500 w-4 h-4 cursor-pointer" />
             <span className="uppercase text-sm font-semibold text-slate-600 group-hover:text-indigo-600 transition-colors duration-200 tracking-wider">
               {item}
             </span>

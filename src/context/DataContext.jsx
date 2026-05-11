@@ -14,7 +14,7 @@ export const DataProvider = ({ children }) => {
         try {
             const response = await axios.get("https://dummyjson.com/products?limit=194");
             setData(response.data.products);
-            console.log(response.data.products , "context Data");
+            // console.log(response.data.products , "context Data");
         } catch (error) {
             console.log("API Error:", error);
         }

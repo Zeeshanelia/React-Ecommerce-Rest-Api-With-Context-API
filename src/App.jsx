@@ -7,6 +7,8 @@ import Navbar from "./component/Navbar";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Footer from './component/Footer'
+import SingleProduct from "./page/SingleProduct"
+
 const apiKey = import.meta.env.VITE_GEOAPIFY_KEY;
 
 function App() {
@@ -66,6 +68,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/product" element={<Product />} />
+            <Route path="/product/:id" element={<SingleProduct />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/about" element={<About />} />
 

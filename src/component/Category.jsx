@@ -4,7 +4,10 @@ import { getData } from "../context/DataContext";
 const Category = () => {
     const {  categoryOnlyData} = getData();
 
+
     // console.log(categoryOnlyData);
+
+
 
     return (
         <>
