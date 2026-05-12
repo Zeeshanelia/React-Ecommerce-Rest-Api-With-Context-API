@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Footer from './component/Footer'
 import SingleProduct from "./page/SingleProduct"
-
+import Cart from './page/Cart'
 const apiKey = import.meta.env.VITE_GEOAPIFY_KEY;
 
 function App() {
@@ -39,7 +39,7 @@ function App() {
             setLocation({
               country: properties.country,
               state: properties.state,
-              city: properties.city || properties.town ,
+              city: properties.city || properties.town,
             });
             setDropDown(false)
           }
@@ -68,14 +68,14 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/product" element={<Product />} />
-            <Route path="/product/:id" element={<SingleProduct />} />
+          <Route path="/product/:id" element={<SingleProduct />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/about" element={<About />} />
+           <Route path="/cart" element={<Cart />} />
+
 
           <Route
-            path="*"
-            element={
-              <div className="h-[60vh] flex items-center justify-center">
+            path="*"  element={ <div className="h-[60vh] flex items-center justify-center">
                 <h1 className="text-3xl font-bold text-red-400">
                   404 - Error
                 </h1>
@@ -83,7 +83,8 @@ function App() {
             }
           />
         </Routes>
-        <Footer/>
+
+        <Footer />
       </div>
     </BrowserRouter>
   );

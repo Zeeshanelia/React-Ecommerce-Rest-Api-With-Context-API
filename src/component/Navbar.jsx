@@ -1,9 +1,12 @@
 import { ChevronDown, MapPin, ShoppingCart, MapPinned } from "lucide-react";
 import { Link, NavLink, } from "react-router-dom";
 import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/clerk-react';
-
+import { useCart } from '../context/CartContext'
 
 const Navbar = ({ location, dropDown, setDropDown, getLocation }) => {
+
+  const { cartItem } = useCart()
+
 
   const toggleDropDown = () => {
     setDropDown(!dropDown)
@@ -61,7 +64,9 @@ const Navbar = ({ location, dropDown, setDropDown, getLocation }) => {
             </ul>
 
             <Link to={"/cart"} className="relative mt-2">   <ShoppingCart className="w-6 h-6 " />
-              <span className="absolute px-2 -top-4 -right-2 bg-red-500 rounded-full text-white "> 0 </span>
+              <span className="absolute px-2 -top-4 -right-2 bg-red-500 rounded-full text-white ">
+                {cartItem.length}
+              </span>
             </Link>
 
             <div className="">

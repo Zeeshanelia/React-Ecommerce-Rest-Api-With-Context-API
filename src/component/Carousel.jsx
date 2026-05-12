@@ -5,6 +5,9 @@ import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
 import { ArrowBigLeftDash, ArrowBigRightDash } from 'lucide-react';
 import Category from '../component/Category'
+
+
+
  // Custom Arrow components for Slick
     const NextArrow = ({ onClick }) => (
         <div
@@ -34,16 +37,14 @@ const Carousel = () => {
         dots:false,
         autoplay: true,
         infinite: true,
-        autoplaySpeed: 14000,
-        pauseOnHover: false,
-        speed: 2000,
+        autoplaySpeed: 2000,
+        pauseOnHover: true,
+        speed: 3000,
         slidesToShow: 1,
         slidesToScroll: 1,
     };
 
-    // useEffect(() => {
-    //     fetchAllData();
-    // }, []);
+
 
 
     return (
@@ -52,7 +53,7 @@ const Carousel = () => {
                 {data?.slice(0, 5)?.map((items) => (
                     <div key={items.id} className="bg-gradient-to-l from-blue-300 to-purple-800 shadow-xl ">
                         <div className="max-w-6xl mx-auto md:px-10 px-2">
-                            <div className="flex  md:flex-row md:items-center md:justify-between gap-10 h-[155px] md:h-[320px]">
+                            <div className="flex  md:flex-row md:items-center md:justify-between gap-5 h-[155px] md:h-[300px]">
 
 
                                 <div className="space-y-1 md:space-y-3 md:w-1/2 text-center md:text-left ml-10">
