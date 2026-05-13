@@ -9,12 +9,15 @@ import axios from "axios";
 import Footer from './component/Footer'
 import SingleProduct from "./page/SingleProduct"
 import Cart from './page/Cart'
+import CategoeyProduct from './page/CategoeyProduct'
+
 const apiKey = import.meta.env.VITE_GEOAPIFY_KEY;
 
 function App() {
   //  const { fetchAllData } = getData();
   const [location, setLocation] = useState(null);
   const [dropDown, setDropDown] = useState(false)
+  const [ cartItem , setCartItem ] = useState()
 
 
   const getLocation = () => {
@@ -56,23 +59,38 @@ function App() {
   useEffect(() => {
     // fetchAllData();
     getLocation();
-  }, []);
+    //  const storeCart = localStorage.getItem("cartItem")
+    // if (storeCart){
+    //   setCartItem( JSON.parse(storeCart))
+    // }
+  }, [])
+
+
+
+
+
+  // useEffect(() => {
+  //   localStorage.setItem("cartItem" , JSON.stringify(cartItem))
+  // }, [cartItem])
+
+
+
 
   return (
     <BrowserRouter>
       <div className="min-h-screen w-full bg-gradient-to-br from-pink-200 via-gray-100 to-yellow-200 flex flex-col">
 
-        <Navbar location={location} getLocation={getLocation} dropDown={dropDown} setDropDown={setDropDown}/>
 
+        <Navbar location={location} getLocation={getLocation} dropDown={dropDown} setDropDown={setDropDown}/>
 
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/product" element={<Product />} />
           <Route path="/product/:id" element={<SingleProduct />} />
+          <Route path="/category/:category" element={<CategoeyProduct />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/about" element={<About />} />
-           <Route path="/cart" element={<Cart />} />
-
+           <Route path="/cart" element={<Cart location={location}  getLocation={getLocation} />}  />
 
           <Route
             path="*"  element={ <div className="h-[60vh] flex items-center justify-center">

@@ -3,21 +3,21 @@ import { Facebook, Twitter, Instagram } from 'lucide-react';
 function Footer() {
     return (
         <footer className="">
-            <div className="max-w-7xl mx-auto px-12 py-8 grid grid-cols-1 md:grid-cols-4 gap-12">
+            <div className="max-w-6xl mx-auto px-12 py-8 grid grid-cols-1 md:grid-cols-4 gap-12">
 
                 {/* Newsletter */}
                 <div>
                     <h3 className="text-purple-400 text-lg font-medium mb-3">
                         Sign up for our newsletter
                     </h3>
-                    <p className="text-gray-400 text-sm leading-relaxed mb-6">
+                    <p className="text-gray-400 text-sm leading-relaxed mb-2">
                         Don't worry, we reserve our newsletter for important news
                         so we only send a few updates a year.
                     </p>
+
                     <button
-                        className="bg-white text-black px-6 py-3 rounded-full font-medium
-                     hover:bg-gray-200 transition-colors duration-200"
-                    >
+                        className="bg-white text-black px-6 py-1 rounded-full font-medium
+                     hover:bg-gray-200 transition-colors duration-200">
                         Subscribe
                     </button>
                 </div>

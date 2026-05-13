@@ -1,5 +1,5 @@
-import {  useEffect } from "react";
-import {  getData } from "../context/DataContext";
+import { useEffect } from "react";
+import { getData } from "../context/DataContext";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
@@ -8,33 +8,41 @@ import Category from '../component/Category'
 
 
 
- // Custom Arrow components for Slick
-    const NextArrow = ({ onClick }) => (
-        <div
-            className="absolute top-1/2 right-4 z-20 cursor-pointer text-white text-2xl
+// Custom Arrow components for Slick
+const NextArrow = ({ onClick }) => (
+    <div
+        className="absolute top-1/2 right-4 z-20 cursor-pointer text-white text-2xl
             transform -translate-y-1/2"  onClick={onClick}>
-            <ArrowBigRightDash />
-        </div>
-    );
+        <ArrowBigRightDash />
+    </div>
+);
 
-    const PrevArrow = ({ onClick }) => (
-        <div
-            className="absolute top-1/2 left-4 z-20 cursor-pointer text-white text-5xl
+const PrevArrow = ({ onClick }) => (
+    <div
+        className="absolute top-1/2 left-4 z-20 cursor-pointer text-white text-5xl
             transform -translate-y-1/2"   onClick={onClick}>
-            <ArrowBigLeftDash />
-        </div>
-    );
+        <ArrowBigLeftDash />
+    </div>
+);
 
 
 
 const Carousel = () => {
-    const { data } = getData();
+
+    const { data, fetchAllData } = getData()
+
+    useEffect(() => {
+        if (data.length === 0) { // only fetch if data is empty
+            fetchAllData()
+        }
+    }, [])
+
 
 
     var settings = {
         prevArrow: <PrevArrow />,
         nextArrow: <NextArrow />,
-        dots:false,
+        dots: false,
         autoplay: true,
         infinite: true,
         autoplaySpeed: 2000,
@@ -90,7 +98,7 @@ const Carousel = () => {
             </Slider >
 
             <div>
-                <Category/>
+                <Category />
             </div>
         </div>
 

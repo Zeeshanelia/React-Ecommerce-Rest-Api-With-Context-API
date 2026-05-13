@@ -2,14 +2,18 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import Breadcrums from '../component/Breadcrums'
+import { useCart } from "../context/CartContext";
+import { toast } from "react-toastify";
 
 const SingleProduct = () => {
     const [singleProduct, setSingleProduct] = useState()
     const param = useParams()
+    const { addToCart } = useCart()
 
     const getSingleProduct = async () => {
         try {
             const response = await axios.get(`https://dummyjson.com/products/${param?.id}`);
+            // toast.success('Prodcut added in cart')
             setSingleProduct(response.data);
         } catch (error) {
             console.log("API Error:", error);
@@ -18,23 +22,22 @@ const SingleProduct = () => {
 
     useEffect(() => {
         getSingleProduct()
+
     }, [])
 
     return (
         <>
-
             <Breadcrums title={singleProduct?.title} />
 
 
             <div className="mt-2 flex items-center justify-center px-8 overflow-hidden md:mb-16">
 
                 <div className="flex flex-col md:flex-row">
-
                     {/* Image */}
                     <div className="md:w-1/2 flex items-center justify-center ">
                         <img
                             src={singleProduct?.thumbnail} alt={singleProduct?.title}
-                            className="w-82 h-82 object-contain drop-shadow-2xl" />
+                            className="w-82 h-82 object-contain drop-shadow-2xl"/>
                     </div>
 
                     {/* Details */}
@@ -58,8 +61,7 @@ const SingleProduct = () => {
                         <div className="flex items-center gap-2 mb-2">
                             <div className="flex">
                                 {[1, 2, 3, 4, 5].map((star) => (
-                                    <span
-                                        key={star}
+                                    <span key={star}
                                         className={`text-xl ${star <= Math.round(singleProduct?.rating) ? "text-amber-400" : "text-zinc-300"}`}> ★ </span>
                                 ))}
                             </div>
@@ -104,7 +106,7 @@ const SingleProduct = () => {
                             </div>
 
                             {/* Add to Cart */}
-                            <button className="w-full bg-amber-400 hover:bg-amber-300 text-zinc-900 font-bold py-3 rounded-2xl transition-all duration-200 text-sm tracking-wide">
+                            <button onClick={()=>addToCart(singleProduct)} className="w-full bg-amber-400 hover:bg-amber-300 text-zinc-900 font-bold py-3 rounded-2xl transition-all duration-200 text-sm tracking-wide">
                                 Add to Cart
                             </button>
                         </div>

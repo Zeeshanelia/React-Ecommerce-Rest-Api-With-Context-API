@@ -6,11 +6,11 @@ const Breadcrums = ({ title }) => {
     return (
         <>
             <h1 className="max-w-7xl mx-auto text-green-600 mt-5 ">
-                <span onClick={() => navigate('/')} className="cursor-pointer hover:bg-rose-500 font-bold rounded-md px-1 text-center py-1"> Home </span>
+                <span onClick={() => navigate('/')} className="cursor-pointer  hover:border-b font-bold  "> Home </span>
                 /
-                <span onClick={() => navigate('/product')} className="hover:bg-rose-500 font-bold rounded-md px-1 text-center py-1 cursor-pointer hover"> Products</span>
+                <span onClick={() => navigate('/product')} className="cursor-pointer  hover:border-b font-bold  "> Products</span>
                 /
-                <span className="hover:bg-rose-500 font-bold rounded-md px-1 text-center py-1 cursor-pointer hover"> {title}</span>
+                <span className="font-semibold"> {title}</span>
             </h1>
 
         </>

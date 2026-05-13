@@ -1,30 +1,60 @@
-import { useEffect } from "react";
 import { getData } from "../context/DataContext";
+import { useNavigate } from "react-router-dom";
 
 const Category = () => {
-    const {  categoryOnlyData} = getData();
+  const { categoryOnlyData } = getData();
 
+  const navigate = useNavigate();
 
-    // console.log(categoryOnlyData);
+  return (
+    <section className="w-full bg-white py-3">
 
+      {/* Slider */}
+      <div
+        className="
+          flex
+          gap-3
+          overflow-x-auto
+          px-4
+          scrollbar-thin
+          scroll-smooth
+        "
+        style={{
+          WebkitOverflowScrolling: "touch",
+        }}
+      >
+        {categoryOnlyData?.map((item, index) => (
+          <button
+            key={index}
+            onClick={() => navigate(`/category/${item}`)}
+            className="
+              flex-shrink-0
+              whitespace-nowrap
 
+              px-5 py-2.5
+              rounded-full
 
-    return (
-        <>
-        <div className="flex  flex-cal items-center justify-evenly gap-2 mx-auto px-2  ">
-            {categoryOnlyData.slice(0, 10)?.map((item, index) => {
-                return (
-                    <div key={index} className="md:max-w-3xl mt-3">
-                        <button className="md:uppercase rounded-md  py-1 px-2 md:font-semibold bg-gradient-to-r from-slate-300 to-purple-700 cursor-pointer">
-                            {item}
-                        </button>
-                    </div>
-                );
-            })}
-        </div>
+              text-sm sm:text-base
+              font-semibold
+              text-white
 
-        </>
-    );
+              bg-gradient-to-r
+              from-purple-600
+              to-blue-500
+
+              hover:scale-105
+              active:scale-95
+
+              transition-all
+              duration-200
+            "
+          >
+            {item}
+          </button>
+        ))}
+      </div>
+    </section>
+  );
 };
 
 export default Category;
