@@ -1,455 +1,114 @@
-import { useUser } from "@clerk/clerk-react";
-import { useCart } from "../context/CartContext";
-import {
-  Plus,
-  Minus,
-  ShoppingBasket,
-  Truck,
-  HandCoins,
-  Trash2,
-} from "lucide-react";
+import { getData } from "../context/DataContext";
 
-const Cart = ({ getLocation, location }) => {
-  const { cartItem, updateQuantity, deleteItem } = useCart();
+const FilterSection = ({
+  search,  setSearch,  brand,  setBrand, priceRange, setPriceRange,  category,  setCategory,  handleCategoryChange,  handleBrandChange, }) => {
+  const { categoryOnlyData, brandOnlyData } = getData();
 
-  const { user } = useUser();
-
-  const totalPrice = cartItem.reduce(
-    (total, item) => total + item.price * item.quantity,
-    0
-  );
+  // Reset Filters
+  const resetFilters = () => {
+    setSearch("");
+    setCategory(categoryOnlyData?.[0] || "");
+    setBrand("");
+    setPriceRange([0, 1000]);
+  };
 
   return (
-    <section className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6 py-6">
+    <aside
+      className=" w-full md:w-[240px] md:min-w-[240px] bg-white/20 backdrop-blur-md border border-white/40 rounded-2xl shadow-lg shadow-indigo-200/40 p-4  "  >
+      {/* Brand */}
+      <h2 className="mb-2 text-center font-bold text-md tracking-tight bg-gradient-to-r from-cyan-500 to-indigo-500 bg-clip-text text-transparent">
+        Brand
+      </h2>
 
-      {/* Heading */}
-      <h1 className="font-bold text-xl sm:text-2xl">
-        My Cart Items - {cartItem.length}
-      </h1>
+      <select
+        className=" w-full rounded-lg border border-gray-300 p-2 bg-white/40 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-indigo-400
+        " onChange={handleBrandChange} value={brand}>
 
-      {/* Empty Cart */}
-      {cartItem.length === 0 ? (
-        <div className="flex items-center justify-center min-h-[300px] sm:min-h-[500px]">
-          <p className="text-gray-500 text-xl sm:text-3xl font-bold text-center">
-            Your Cart is Empty
-          </p>
-        </div>
-      ) : (
-        <>
-          {/* Cart Items */}
-          <div className="mt-6 flex flex-col gap-4">
-            {cartItem.map((item, index) => (
-              <div
-                key={index}
-                className="
-                  border border-gray-300 rounded-xl
-                  p-3 sm:p-4
-                  flex flex-col sm:flex-row
-                  gap-4
-                  sm:items-center
-                  sm:justify-between
-                "
-              >
-                {/* Left Side */}
-                <div className="flex gap-3 sm:gap-4 flex-1">
-                  <img
-                    src={item.images?.[0] || item.thumbnail}
-                    alt={item.title}
-                    className="
-                      w-20 h-20
-                      sm:w-24 sm:h-24
-                      rounded-lg
-                      object-cover
-                      flex-shrink-0
-                    "
-                  />
+        <option value="">All Brands</option>
 
-                  <div className="min-w-0">
-                    <h3 className="font-semibold line-clamp-2 text-sm sm:text-base">
-                      {item.title}
-                    </h3>
+        {brandOnlyData?.length > 0 ? (
+          brandOnlyData.map((item, index) => (
+            <option value={item} key={index}>
+              {item}
+            </option>
+          ))
+        ) : (
+          <option disabled>No Brands</option>
+        )}
+      </select>
 
-                    <p className="text-red-500 font-bold mt-1">
-                      ${item.price}
-                    </p>
+      {/* Price */}
+      <h2 className="py-3 text-center font-bold text-md tracking-wide bg-gradient-to-r from-cyan-500 to-indigo-500 bg-clip-text text-transparent">
+        Price Range
+      </h2>
 
-                    <p className="text-sm text-gray-500 mt-1">
-                      Qty: {item.quantity}
-                    </p>
-                  </div>
-                </div>
+      <div>
+        <label className="block text-sm font-medium text-slate-700 mb-2">
+          Price: ${priceRange[0]} - ${priceRange[1]}
+        </label>
 
-                {/* Right Side */}
-                <div
-                  className="
-                    flex flex-col xs:flex-row
-                    gap-3
-                    sm:items-center
-                  "
-                >
-                  {/* Quantity */}
-                  <div className="flex items-center gap-3">
-                    <button
-                      onClick={() =>
-                        updateQuantity(item.id, "decrease")
-                      }
-                      className="
-                        bg-red-500 hover:bg-red-600
-                        text-white
-                        w-9 h-9
-                        rounded-lg
-                        flex items-center justify-center
-                        transition
-                      "
-                    >
-                      <Minus size={16} />
-                    </button>
+        <input
+          type="range"
+          className="w-full cursor-pointer"
+          value={priceRange[1]}
+          min={0}
+          max={1000}
+          onChange={(e) =>
+            setPriceRange([0, Number(e.target.value)])
+          }
+        />
+      </div>
 
-                    <span className="font-bold text-lg min-w-[20px] text-center">
-                      {item.quantity}
-                    </span>
+      {/* Reset */}
+      <button
+        onClick={resetFilters}
+        className=" mt-5 w-full px-4 py-2 rounded-xl font-semibold text-sm bg-white/40 border border-white/50 text-slate-700 hover:bg-white/60 hover:shadow-md transition-all
+duration-200">
+        Reset Filter
+      </button>
 
-                    <button
-                      onClick={() =>
-                        updateQuantity(item.id, "increase")
-                      }
-                      className="
-                        bg-red-500 hover:bg-red-600
-                        text-white
-                        w-9 h-9
-                        rounded-lg
-                        flex items-center justify-center
-                        transition
-                      "
-                    >
-                      <Plus size={16} />
-                    </button>
-                  </div>
+      {/* Divider */}
+      <div className="h-px bg-gradient-to-r from-cyan-300/50 via-indigo-300/50 to-transparent mt-4 mb-3" />
 
-                  {/* Remove */}
-                  <button
-                    onClick={() => deleteItem(item.id)}
-                    className="
-                      bg-red-500 hover:bg-red-600
-                      text-white
-                      px-4 py-2
-                      rounded-lg
-                      flex items-center justify-center gap-2
-                      transition
-                      text-sm sm:text-base
-                    "
-                  >
-                    Remove
-                    <Trash2 size={18} />
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
+      {/* Category */}
+      <h2 className="mb-2 text-center font-bold text-md tracking-wide bg-gradient-to-r from-cyan-500 to-indigo-500 bg-clip-text text-transparent">
+        Category
+      </h2>
 
-          {/* Bottom Section */}
-          <div
-            className="
-              mt-8
-              grid
-              grid-cols-1
-              lg:grid-cols-2
-              gap-6
-            "
-          >
-            {/* Delivery Info */}
-            <div className="border border-gray-300 rounded-2xl p-4 sm:p-6">
-              <h2 className="text-xl font-bold mb-5">
-                Delivery Info
-              </h2>
+      {/* Search */}
+      <input
+        type="text"
+        placeholder="Search Products..."
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+        className=" w-full p-2 rounded-lg border border-gray-300 bg-white/30 backdrop-blur-sm placeholder-slate-400 text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-300/5 "
+      />
 
-              <div className="space-y-4">
-                {/* Full Name */}
-                <div>
-                  <label className="text-sm font-medium">
-                    Full Name
-                  </label>
-
-                  <input
-                    type="text"
-                    defaultValue={user?.fullName}
-                    placeholder="Enter Name"
-                    className="
-                      w-full mt-1
-                      border border-gray-300
-                      rounded-lg
-                      px-4 py-3
-                      focus:outline-none
-                      focus:ring-2 focus:ring-red-400
-                    "
-                  />
-                </div>
-
-                {/* Address */}
-                <div>
-                  <label className="text-sm font-medium">
-                    Address
-                  </label>
-
-                  <input
-                    type="text"
-                    defaultValue={location?.country}
-                    placeholder="Enter Address"
-                    className="
-                      w-full mt-1
-                      border border-gray-300
-                      rounded-lg
-                      px-4 py-3
-                      focus:outline-none
-                      focus:ring-2 focus:ring-red-400
-                    "
-                  />
-                </div>
-
-                {/* State + Postcode */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <label className="text-sm font-medium">
-                      State
-                    </label>
-
-                    <input
-                      type="text"
-                      defaultValue={location?.state}
-                      placeholder="State"
-                      className="
-                        w-full mt-1
-                        border border-gray-300
-                        rounded-lg
-                        px-4 py-3
-                        focus:outline-none
-                        focus:ring-2 focus:ring-red-400
-                      "
-                    />
-                  </div>
-
-                  <div>
-                    <label className="text-sm font-medium">
-                      PostCode
-                    </label>
-
-                    <input
-                      type="text"
-                      defaultValue={location?.postcode}
-                      placeholder="Postcode"
-                      className="
-                        w-full mt-1
-                        border border-gray-300
-                        rounded-lg
-                        px-4 py-3
-                        focus:outline-none
-                        focus:ring-2 focus:ring-red-400
-                      "
-                    />
-                  </div>
-                </div>
-
-                {/* Country + Phone */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <label className="text-sm font-medium">
-                      Country
-                    </label>
-
-                    <input
-                      type="text"
-                      defaultValue={location?.country}
-                      placeholder="Country"
-                      className="
-                        w-full mt-1
-                        border border-gray-300
-                        rounded-lg
-                        px-4 py-3
-                        focus:outline-none
-                        focus:ring-2 focus:ring-red-400
-                      "
-                    />
-                  </div>
-
-                  <div>
-                    <label className="text-sm font-medium">
-                      Phone Number
-                    </label>
-
-                    <input
-                      type="text"
-                      placeholder="Phone Number"
-                      className="
-                        w-full mt-1
-                        border border-gray-300
-                        rounded-lg
-                        px-4 py-3
-                        focus:outline-none
-                        focus:ring-2 focus:ring-red-400
-                      "
-                    />
-                  </div>
-                </div>
-
-                {/* Buttons */}
-                <div className="flex flex-col sm:flex-row gap-3 pt-2">
-                  <button
-                    className="
-                      flex-1
-                      bg-red-500 hover:bg-red-600
-                      text-white
-                      py-3
-                      rounded-xl
-                      transition
-                    "
-                  >
-                    Submit
-                  </button>
-
-                  <button
-                    onClick={getLocation}
-                    className="
-                      flex-1
-                      border border-red-500
-                      text-red-500
-                      hover:bg-red-50
-                      py-3
-                      rounded-xl
-                      transition
-                    "
-                  >
-                    Detect Location
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            {/* Bill Details */}
-            <div
-              className="
-                border border-gray-300
-                rounded-2xl
-                p-4 sm:p-6
-                h-fit
-                lg:sticky lg:top-24
-              "
+      {/* Categories */}
+      <div className="flex flex-col mt-3 text-left">
+        {categoryOnlyData?.length > 0 ? (
+          categoryOnlyData.map((item, index) => (
+            <label
+              key={index}
+              htmlFor={item}
+              className=" flex gap-3 items-center p-2 rounded-xl hover:bg-white/30 transition-all duration-200 group cursor-pointer "
             >
-              <h2 className="text-xl font-bold mb-5">
-                Bill Details
-              </h2>
+              <input id={item} type="radio" name="category" value={item} onChange={handleCategoryChange} checked={category === item} className="accent-indigo-500 w-4 h-4 cursor-pointer"
+              />
 
-              <div className="space-y-4">
-                {/* Items Total */}
-                <div className="flex justify-between items-center">
-                  <span className="flex items-center gap-2 text-gray-600">
-                    <ShoppingBasket size={18} />
-                    Items total
-                  </span>
-
-                  <span className="font-semibold">
-                    ${totalPrice}
-                  </span>
-                </div>
-
-                {/* Delivery */}
-                <div className="flex justify-between items-center">
-                  <span className="flex items-center gap-2 text-gray-600">
-                    <Truck size={18} />
-                    Delivery
-                  </span>
-
-                  <span>
-                    <span className="line-through text-gray-400 mr-1">
-                      $25
-                    </span>
-
-                    <span className="text-red-500 font-bold">
-                      FREE
-                    </span>
-                  </span>
-                </div>
-
-                {/* Handling */}
-                <div className="flex justify-between items-center">
-                  <span className="flex items-center gap-2 text-gray-600">
-                    <HandCoins size={18} />
-                    Handling
-                  </span>
-
-                  <span className="font-semibold text-red-500">
-                    $5
-                  </span>
-                </div>
-
-                <hr />
-
-                {/* Grand Total */}
-                <div className="flex justify-between items-center">
-                  <span className="text-lg font-bold">
-                    Grand Total
-                  </span>
-
-                  <span className="text-lg font-bold">
-                    ${totalPrice + 5}
-                  </span>
-                </div>
-
-                {/* Promo */}
-                <div>
-                  <label className="text-sm font-medium">
-                    Apply Promo Code
-                  </label>
-
-                  <div className="flex flex-col sm:flex-row gap-3 mt-2">
-                    <input
-                      type="text"
-                      placeholder="Enter code"
-                      className="
-                        flex-1
-                        border border-gray-300
-                        rounded-lg
-                        px-4 py-3
-                        focus:outline-none
-                        focus:ring-2 focus:ring-red-400
-                      "
-                    />
-
-                    <button
-                      className="
-                        border border-gray-300
-                        px-5 py-3
-                        rounded-lg
-                        hover:bg-gray-100
-                        transition
-                      "
-                    >
-                      Apply
-                    </button>
-                  </div>
-                </div>
-
-                {/* Checkout */}
-                <button
-                  className="
-                    w-full
-                    bg-red-500 hover:bg-red-600
-                    text-white
-                    font-semibold
-                    py-3
-                    rounded-xl
-                    transition
-                    mt-4
-                  "
-                >
-                  Proceed to Checkout
-                </button>
-              </div>
-            </div>
-          </div>
-        </>
-      )}
-    </section>
+              <span className="uppercase text-sm font-semibold text-slate-600 group-hover:text-indigo-600 transition-colors duration-200 tracking-wider">
+                {item}
+              </span>
+            </label>
+          ))
+        ) : (
+          <p className="text-sm text-gray-500 text-center mt-2">
+            No Categories Found
+          </p>
+        )}
+      </div>
+    </aside>
   );
 };
 
-export default Cart;
+export default FilterSection;
